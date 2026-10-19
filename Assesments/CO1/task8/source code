@@ -1,0 +1,113 @@
+import time
+import statistics
+
+# Approach 1: Iterative Linear Search
+def linear_search(data, target):
+    for i, value in enumerate(data):
+        if value == target:
+            return i
+    return -1
+
+
+# Approach 2: Iterative Binary Search
+def binary_search(data, target):
+    left = 0
+    right = len(data) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+
+        if data[mid] == target:
+            return mid
+        elif data[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1
+
+
+# Approach 3: Hash-Based Search
+def hash_search(hash_table, target):
+    return target in hash_table
+
+
+# Measure median search time
+def measure_time(function, data, target, repeats=5):
+    times = []
+    result = None
+
+    for _ in range(repeats):
+        start = time.perf_counter()
+        result = function(data, target)
+        end = time.perf_counter()
+
+        times.append(end - start)
+
+    return result, statistics.median(times)
+
+
+# Dataset sizes
+sizes = [1000, 10000, 100000, 1000000]
+
+print("TASK 8: IMPLEMENT AND TEST THE ALGORITHMS")
+print("-" * 90)
+print(f"{'Size':<12}{'Algorithm':<18}"
+      f"{'Preprocess(s)':<18}{'Target':<12}"
+      f"{'Result':<12}{'Search(s)':<15}")
+
+for n in sizes:
+
+    # Generate identical registration numbers
+    data = list(range(1, n + 1))
+
+    # Binary Search preprocessing: sorting
+    start = time.perf_counter()
+    sorted_data = sorted(data)
+    sort_time = time.perf_counter() - start
+
+    # Hash Search preprocessing: build hash table
+    start = time.perf_counter()
+    hash_table = set(data)
+    hash_time = time.perf_counter() - start
+
+    # Test first, middle, last and absent targets
+    targets = [1, n // 2, n, n + 1]
+
+    for target in targets:
+
+        expected = target in data
+
+        # Linear Search
+        result, elapsed = measure_time(
+            linear_search, data, target
+        )
+        assert (result != -1) == expected
+
+        print(f"{n:<12}{'Linear Search':<18}"
+              f"{0:<18.6f}{target:<12}"
+              f"{str(result != -1):<12}{elapsed:<15.8f}")
+
+        # Binary Search
+        result, elapsed = measure_time(
+            binary_search, sorted_data, target
+        )
+        assert (result != -1) == expected
+
+        print(f"{n:<12}{'Binary Search':<18}"
+              f"{sort_time:<18.6f}{target:<12}"
+              f"{str(result != -1):<12}{elapsed:<15.8f}")
+
+        # Hash-Based Search
+        result, elapsed = measure_time(
+            hash_search, hash_table, target
+        )
+        assert result == expected
+
+        print(f"{n:<12}{'Hash Search':<18}"
+              f"{hash_time:<18.6f}{target:<12}"
+              f"{str(result):<12}{elapsed:<15.8f}")
+
+    print("-" * 90)
+
+print("All correctness tests passed successfully!")
