@@ -1,0 +1,35 @@
+def median_of_medians(a, k):
+    if len(a) <= 5:
+        return sorted(a)[k - 1]
+
+    groups = []
+
+    for i in range(0, len(a), 5):
+        group = sorted(a[i:i + 5])
+        groups.append(group[len(group) // 2])
+
+    pivot = median_of_medians(
+        groups, (len(groups) + 1) // 2
+    )
+
+    left = [x for x in a if x < pivot]
+    equal = [x for x in a if x == pivot]
+    right = [x for x in a if x > pivot]
+
+    if k <= len(left):
+        return median_of_medians(left, k)
+
+    elif k <= len(left) + len(equal):
+        return pivot
+
+    else:
+        return median_of_medians(
+            right, k - len(left) - len(equal)
+        )
+
+
+n = int(input())
+a = list(map(int, input().split()))
+k = int(input())
+
+print("Kth Smallest Element =", median_of_medians(a, k))
