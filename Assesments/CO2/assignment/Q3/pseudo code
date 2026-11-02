@@ -1,0 +1,32 @@
+START
+Read text
+Read pattern
+
+Set comparisons = 0
+Set found = false
+
+FOR i = 0 to length(text) - length(pattern)
+    Set j = 0
+
+    WHILE j < length(pattern)
+        Increment comparisons
+
+        IF text[i+j] is not equal to pattern[j]
+            BREAK
+        END IF
+
+        Increment j
+    END WHILE
+
+    IF j equals length(pattern)
+        Display pattern found at position i
+        Set found = true
+    END IF
+END FOR
+
+IF found is false
+    Display pattern not found
+END IF
+
+Display comparisons
+STOP
