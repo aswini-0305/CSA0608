@@ -1,0 +1,26 @@
+ALGORITHM MAX_SUBARRAY(A, low, high)
+
+1. If low = high:
+      Return A[low]
+
+2. Find middle:
+      mid = (low + high) / 2
+
+3. Find maximum sum in left half:
+      Left = MAX_SUBARRAY(A, low, mid)
+
+4. Find maximum sum in right half:
+      Right = MAX_SUBARRAY(A, mid+1, high)
+
+5. Find maximum sum crossing the middle:
+      Calculate maximum left sum.
+      Calculate maximum right sum.
+
+6. Crossing = left sum + right sum
+
+7. Result = Maximum of:
+      Left, Right, Crossing
+
+8. Return Result.
+
+END
