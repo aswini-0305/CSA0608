@@ -1,0 +1,28 @@
+ALGORITHM KARATSUBA(x, y)
+
+1. If x or y is a single digit:
+      Return x * y
+
+2. Find the maximum number of digits.
+
+3. Divide x into two parts:
+      a = first half
+      b = second half
+
+4. Divide y into two parts:
+      c = first half
+      d = second half
+
+5. Calculate:
+      P = KARATSUBA(a, c)
+      Q = KARATSUBA(b, d)
+      R = KARATSUBA(a+b, c+d)
+
+6. Calculate:
+      Result = P * 10^(2m)
+               + (R-P-Q) * 10^m
+               + Q
+
+7. Return Result.
+
+END
