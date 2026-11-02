@@ -1,0 +1,44 @@
+
+n = int(input("Enter number of packages: "))
+
+weights = []
+values = []
+
+for i in range(n):
+    w, v = map(int, input(
+        "Enter weight and value: "
+    ).split())
+
+    weights.append(w)
+    values.append(v)
+
+capacity = int(input("Enter maximum capacity: "))
+
+max_value = 0
+best_weight = 0
+best_items = []
+combinations = 0
+
+for i in range(1 << n):
+    total_weight = 0
+    total_value = 0
+    selected = []
+
+    combinations += 1
+
+    for j in range(n):
+        if i & (1 << j):
+            total_weight += weights[j]
+            total_value += values[j]
+            selected.append(j + 1)
+
+    if total_weight <= capacity:
+        if total_value > max_value:
+            max_value = total_value
+            best_weight = total_weight
+            best_items = selected
+
+print("\nSelected Packages:", best_items)
+print("Total Weight:", best_weight)
+print("Maximum Value:", max_value)
+print("Combinations Examined:", combinations)
