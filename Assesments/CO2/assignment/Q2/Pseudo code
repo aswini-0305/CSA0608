@@ -1,0 +1,23 @@
+START
+Read number of tools
+Read tool IDs
+Read target tool ID
+
+Set comparisons = 0
+Set found = false
+
+FOR each element in the list
+    Increment comparisons
+    IF element equals target
+        Display tool found
+        Set found = true
+        BREAK
+    END IF
+END FOR
+
+IF found is false
+    Display tool not found
+END IF
+
+Display number of comparisons
+STOP
