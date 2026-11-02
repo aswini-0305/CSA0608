@@ -1,0 +1,30 @@
+ALGORITHM MEDIAN_OF_MEDIANS(A, k)
+
+1. If size of A <= 5:
+      Sort A.
+      Return kth smallest element.
+
+2. Divide A into groups of five elements.
+
+3. Find the median of each group.
+
+4. Find the median of all group medians.
+
+5. Select this median as pivot.
+
+6. Divide A into three groups:
+      Left = elements smaller than pivot.
+      Equal = elements equal to pivot.
+      Right = elements greater than pivot.
+
+7. If k <= size of Left:
+      Return MEDIAN_OF_MEDIANS(Left, k)
+
+8. Else if k <= size of Left + size of Equal:
+      Return pivot.
+
+9. Else:
+      Return MEDIAN_OF_MEDIANS(
+      Right, k-size of Left-size of Equal)
+
+END
