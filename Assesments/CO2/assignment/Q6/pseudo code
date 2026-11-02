@@ -1,0 +1,26 @@
+START
+Read number of packages
+Read package weights and values
+Read maximum capacity
+
+Set maximum value = 0
+
+Generate all possible package combinations
+
+FOR each combination
+    Calculate total weight
+    Calculate total value
+
+    IF total weight <= capacity
+        IF total value > maximum value
+            Update maximum value
+            Store selected packages
+        END IF
+    END IF
+END FOR
+
+Display selected packages
+Display total weight
+Display maximum value
+Display combinations examined
+STOP
