@@ -1,0 +1,29 @@
+ALGORITHM CLOSEST_PAIR(P)
+
+1. Sort points based on X coordinates.
+
+2. If number of points <= 3:
+      Find minimum distance directly.
+      Return minimum distance.
+
+3. Divide points into two halves.
+
+4. Find minimum distance in left half.
+
+5. Find minimum distance in right half.
+
+6. Set d = minimum of both distances.
+
+7. Create a strip containing points
+   near the dividing line.
+
+8. Sort strip based on Y coordinates.
+
+9. Compare each point with the next
+   maximum seven points.
+
+10. Update minimum distance.
+
+11. Return minimum distance.
+
+END
