@@ -1,0 +1,20 @@
+ALGORITHM MERGE_SORT(A)
+
+1. If size of A <= 1:
+      Return A
+
+2. Find middle position.
+
+3. Divide A into Left and Right.
+
+4. Left = MERGE_SORT(Left)
+
+5. Right = MERGE_SORT(Right)
+
+6. Compare elements of Left and Right.
+
+7. Merge both arrays in sorted order.
+
+8. Return merged array.
+
+END
