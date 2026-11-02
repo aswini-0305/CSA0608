@@ -1,0 +1,27 @@
+
+tools = []
+
+n = int(input("Enter number of tools: "))
+
+for i in range(n):
+    tool = input("Enter Tool ID: ")
+    tools.append(tool)
+
+target = input("Enter Tool ID to search: ")
+
+comparisons = 0
+found = False
+
+for i in range(n):
+    comparisons += 1
+
+    if tools[i] == target:
+        print("Tool Found!")
+        print("Technician position:", i + 1)
+        found = True
+        break
+
+if not found:
+    print("Tool Not Found!")
+
+print("Number of comparisons:", comparisons)
