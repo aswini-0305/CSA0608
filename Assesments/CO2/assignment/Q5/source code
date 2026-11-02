@@ -1,0 +1,54 @@
+
+import math
+
+n = int(input("Enter number of points: "))
+
+points = []
+
+for i in range(n):
+    x, y = map(float, input("Enter coordinates: ").split())
+    points.append((x, y))
+
+hull = set()
+
+for i in range(n):
+    for j in range(i + 1, n):
+
+        positive = False
+        negative = False
+
+        x1, y1 = points[i]
+        x2, y2 = points[j]
+
+        for k in range(n):
+            if k == i or k == j:
+                continue
+
+            x3, y3 = points[k]
+
+            cross = ((x2 - x1) * (y3 - y1)
+                     - (y2 - y1) * (x3 - x1))
+
+            if cross > 0:
+                positive = True
+            elif cross < 0:
+                negative = True
+
+        if not (positive and negative):
+            hull.add(points[i])
+            hull.add(points[j])
+
+if len(hull) < 3:
+    print("No two-dimensional convex hull")
+else:
+    cx = sum(p[0] for p in hull) / len(hull)
+    cy = sum(p[1] for p in hull) / len(hull)
+
+    boundary = sorted(
+        hull,
+        key=lambda p: math.atan2(p[1] - cy, p[0] - cx)
+    )
+
+    print("Convex Hull Boundary:")
+    for point in boundary:
+        print(point)
