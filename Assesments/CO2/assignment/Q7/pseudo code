@@ -1,0 +1,29 @@
+START
+Read number of packages
+Read weights and values
+Read capacity
+
+Create DP table
+
+FOR i = 0 to n
+    FOR w = 0 to capacity
+
+        IF i = 0 OR w = 0
+            DP[i][w] = 0
+
+        ELSE IF weight[i] <= w
+            DP[i][w] = MAX(
+                value[i] + DP[i-1][w-weight[i]],
+                DP[i-1][w]
+            )
+
+        ELSE
+            DP[i][w] = DP[i-1][w]
+
+        END IF
+    END FOR
+END FOR
+
+Display maximum value
+Trace DP table to find selected packages
+STOP
