@@ -1,0 +1,29 @@
+
+text = input("Enter the text: ")
+pattern = input("Enter the pattern: ")
+
+n = len(text)
+m = len(pattern)
+
+comparisons = 0
+found = False
+
+for i in range(n - m + 1):
+    j = 0
+
+    while j < m:
+        comparisons += 1
+
+        if text[i + j] != pattern[j]:
+            break
+
+        j += 1
+
+    if j == m:
+        print("Pattern found at position:", i)
+        found = True
+
+if not found:
+    print("Pattern not found")
+
+print("Character comparisons:", comparisons)
