@@ -1,0 +1,147 @@
+
+import random
+import time
+import math
+
+# 1. Insertion Sort
+def insertion_sort(alerts):
+    comparisons = 0
+
+    for i in range(1, len(alerts)):
+        key = alerts[i]
+        j = i - 1
+
+        while j >= 0:
+            comparisons += 1
+            if alerts[j][1] < key[1]:
+                alerts[j + 1] = alerts[j]
+                j -= 1
+            else:
+                break
+
+        alerts[j + 1] = key
+
+    return alerts, comparisons
+
+
+# 2. Blocklist Search - Before
+def sequential_search(blocklist, ip):
+    comparisons = 0
+
+    for address in blocklist:
+        comparisons += 1
+        if address == ip:
+            return True, comparisons
+
+    return False, comparisons
+
+
+# Blocklist Search - After
+def set_search(blocklist, ip):
+    blocked_set = set(blocklist)
+    return ip in blocked_set
+
+
+# 3. String Matching
+def find_signature(log, pattern):
+    hits = []
+    n = len(log)
+    m = len(pattern)
+    comparisons = 0
+
+    for i in range(n - m + 1):
+        j = 0
+
+        while j < m:
+            comparisons += 1
+            if log[i + j] != pattern[j]:
+                break
+            j += 1
+
+        if j == m:
+            hits.append(i)
+
+    return hits, comparisons
+
+
+# 4. Closest Pair - Brute Force
+def brute_force_closest(events):
+    min_dist = float('inf')
+    pair = None
+    count = 0
+
+    for i in range(len(events)):
+        for j in range(i + 1, len(events)):
+            count += 1
+
+            dx = events[i][0] - events[j][0]
+            dy = events[i][1] - events[j][1]
+            d = math.sqrt(dx**2 + dy**2)
+
+            if d < min_dist:
+                min_dist = d
+                pair = (i, j)
+
+    return pair, min_dist, count
+
+
+# Closest Pair - Optimised
+def optimised_closest(events):
+    min_dist_sq = float('inf')
+    pair = None
+    count = 0
+
+    for i in range(len(events) - 1):
+        for j in range(i + 1, len(events)):
+            count += 1
+
+            dx = events[i][0] - events[j][0]
+            dy = events[i][1] - events[j][1]
+            d_sq = dx**2 + dy**2
+
+            if d_sq < min_dist_sq:
+                min_dist_sq = d_sq
+                pair = (i, j)
+
+    distance = math.sqrt(min_dist_sq) if pair else None
+    return pair, distance, count
+
+
+# 5. Performance Comparison
+print("CLOSEST PAIR PERFORMANCE")
+
+for n in [1000, 4000, 8000]:
+    events = [
+        (random.randint(0, 10000), random.randint(0, 10000))
+        for _ in range(n)
+    ]
+
+    start = time.perf_counter()
+    brute = brute_force_closest(events)
+    brute_time = time.perf_counter() - start
+
+    start = time.perf_counter()
+    optimised = optimised_closest(events)
+    opt_time = time.perf_counter() - start
+
+    print("\nInput Size:", n)
+    print("Brute Force Comparisons:", brute[2])
+    print("Optimised Comparisons:", optimised[2])
+    print("Brute Force Time:", round(brute_time, 4))
+    print("Optimised Time:", round(opt_time, 4))
+
+
+# 6. Insertion Sort Comparison
+print("\nINSERTION SORT PERFORMANCE")
+
+for n in [1000, 4000, 8000]:
+    nearly_sorted = [(f"A{i}", i) for i in range(n)]
+    random_alerts = nearly_sorted.copy()
+    random.shuffle(random_alerts)
+
+    _, c1 = insertion_sort(nearly_sorted)
+    _, c2 = insertion_sort(random_alerts)
+
+    print("\nInput Size:", n)
+    print("Nearly Sorted Comparisons:", c1)
+    print("Random Comparisons:", c2)
