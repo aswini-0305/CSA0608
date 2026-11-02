@@ -1,0 +1,31 @@
+START
+Read number of points
+Read coordinates
+
+Create empty hull set
+
+FOR every pair of points P and Q
+    Set positive = false
+    Set negative = false
+
+    FOR every other point R
+        Calculate cross product
+
+        IF cross product > 0
+            Set positive = true
+        ELSE IF cross product < 0
+            Set negative = true
+        END IF
+    END FOR
+
+    IF positive and negative are not both true
+        Add P and Q to hull set
+    END IF
+END FOR
+
+Remove duplicate hull points
+Calculate centre of hull points
+Sort hull points by angle around centre
+
+Display hull boundary
+STOP
