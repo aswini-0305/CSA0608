@@ -1,0 +1,28 @@
+START
+Read array
+Copy array into three separate arrays
+
+SELECTION SORT:
+FOR i = 0 to n-2
+    Find minimum element
+    Swap minimum with array[i]
+    Count comparisons and swaps
+END FOR
+
+BUBBLE SORT:
+FOR i = 0 to n-2
+    Compare adjacent elements
+    Swap if they are in wrong order
+    Count comparisons and swaps
+END FOR
+
+INSERTION SORT:
+FOR i = 1 to n-1
+    Store current element as key
+    Shift larger elements to right
+    Insert key in correct position
+    Count comparisons and movements
+END FOR
+
+Display sorted arrays and operation counts
+STOP
