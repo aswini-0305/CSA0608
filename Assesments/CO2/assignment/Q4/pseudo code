@@ -1,0 +1,23 @@
+START
+Read number of points
+Read x and y coordinates
+
+Set minimum distance = infinity
+Set pairs examined = 0
+
+FOR i = 0 to n-2
+    FOR j = i+1 to n-1
+        Calculate distance between points
+        Increment pairs examined
+
+        IF distance < minimum distance
+            Update minimum distance
+            Store the two points
+        END IF
+    END FOR
+END FOR
+
+Display closest pair
+Display minimum distance
+Display pairs examined
+STOP
