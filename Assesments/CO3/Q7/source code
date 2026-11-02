@@ -1,0 +1,32 @@
+def max_subarray(a, low, high):
+    if low == high:
+        return a[low]
+
+    mid = (low + high) // 2
+
+    left = max_subarray(a, low, mid)
+    right = max_subarray(a, mid + 1, high)
+
+    left_sum = float('-inf')
+    total = 0
+
+    for i in range(mid, low - 1, -1):
+        total += a[i]
+        left_sum = max(left_sum, total)
+
+    right_sum = float('-inf')
+    total = 0
+
+    for i in range(mid + 1, high + 1):
+        total += a[i]
+        right_sum = max(right_sum, total)
+
+    crossing = left_sum + right_sum
+
+    return max(left, right, crossing)
+
+
+n = int(input())
+a = list(map(int, input().split()))
+
+print("Maximum Subarray Sum =", max_subarray(a, 0, n - 1))
