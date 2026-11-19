@@ -1,0 +1,59 @@
+TASK 3 – 0/1 KNAPSACK USING DYNAMIC PROGRAMMING
+Task 3.1 – State
+DP[i,w] represents the maximum value obtainable using only the first i items with total weight at most w.
+
+Task 3.2 – Recurrence
+Let item i have weight wt[i] and value val[i].
+Base: DP[0,w] = 0 for every capacity w; DP[i,0] = 0 for every item count i.
+If wt[i] > w, item i cannot fit: DP[i,w] = DP[i-1,w].
+Otherwise: DP[i,w] = MAX(DP[i-1,w], val[i] + DP[i-1,w-wt[i]]).
+The first choice excludes item i. The second includes it and adds its value to the best value using earlier items and the remaining capacity. Using row i-1 prevents selecting an item more than once.
+
+Task 3.3 – Pseudocode
+ALGORITHM ZeroOneKnapsack(Items, Capacity)
+INPUT: n indivisible items with weights and values; Capacity
+OUTPUT: Maximum value and selected item IDs
+BEGIN
+    FOR w ← 0 TO Capacity DO
+        DP[0,w] ← 0
+    END FOR
+    FOR i ← 0 TO n DO
+        DP[i,0] ← 0
+    END FOR
+
+    FOR i ← 1 TO n DO
+        FOR w ← 1 TO Capacity DO
+            IF Items[i].weight > w THEN
+                DP[i,w] ← DP[i-1,w]
+            ELSE
+                excludeValue ← DP[i-1,w]
+                includeValue ← Items[i].value +
+                                DP[i-1,w-Items[i].weight]
+                DP[i,w] ← MAX(excludeValue, includeValue)
+            END IF
+        END FOR
+    END FOR
+
+    selected ← empty list
+    w ← Capacity
+    FOR i ← n DOWNTO 1 DO
+        IF DP[i,w] != DP[i-1,w] THEN
+            ADD Items[i].ID to selected
+            w ← w - Items[i].weight
+        END IF
+    END FOR
+    REVERSE selected
+    RETURN DP[n,Capacity], selected
+END
+
+Task 3.4 – Desk-check (capacity 7)
+Items: P(2,12), Q(3,20), R(4,25), S(5,30).
+Important states:
+After P: capacities 2–7 have value 12.
+After Q: at capacity 5, P+Q gives 32; at capacity 7, P+Q gives 32.
+After R: at capacity 4, R gives 25; at capacity 6, P+R gives 37; at capacity 7, P+R gives 37.
+After S: at capacity 5, S gives 30; at capacity 7, P+S gives 42. Q+S weighs 8 and is infeasible.
+Final DP[4,7] = 42. Reconstructing selects S (remaining capacity 2), then P. Selected items: P and S. Total weight = 7; total value = 42.
+
+Task 3.5 – Dependency
+A state DP[i,w] depends on states in row i-1: DP[i-1,w] and, when inclusion is feasible, DP[i-1,w-weight[i]]. Therefore all states for fewer items must be computed before states for more items. The pseudocode processes i from 1 upward and capacity values within each row, ensuring the required previous-row results already exist.

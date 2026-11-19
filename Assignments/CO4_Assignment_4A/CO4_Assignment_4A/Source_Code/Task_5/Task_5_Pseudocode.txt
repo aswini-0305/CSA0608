@@ -1,0 +1,84 @@
+TASK 5 – DIJKSTRA, BELLMAN-FORD AND FLOYD
+Task 5.1 – Dijkstra pseudocode (non-negative weights)
+ALGORITHM Dijkstra(Graph, source)
+INPUT: Directed weighted graph with non-negative edge weights; source A
+OUTPUT: shortest distances and predecessors from A
+BEGIN
+    FOR each vertex v DO
+        dist[v] ← INFINITY
+        pred[v] ← NONE
+        visited[v] ← FALSE
+    END FOR
+    dist[source] ← 0
+
+    WHILE there exists an unvisited vertex with finite distance DO
+        u ← unvisited vertex with minimum dist[u]
+        visited[u] ← TRUE
+
+        FOR each edge (u,v) with weight w DO
+            IF visited[v] = FALSE AND dist[u] + w < dist[v] THEN
+                dist[v] ← dist[u] + w
+                pred[v] ← u
+            END IF
+        END FOR
+    END WHILE
+    RETURN dist, pred
+END
+
+Desk-check from A:
+Initial: A=0; B,C,D,E=∞.
+Choose A: B=4, C=7.
+Choose B (4): C=min(7,6)=6; D=10.
+Choose C (6): D=min(10,7)=7; E=14.
+Choose D (7): E=min(14,10)=10.
+Choose E (10): no change.
+Final distances: A=0, B=4, C=6, D=7, E=10.
+Predecessors: B←A, C←B, D←C, E←D.
+
+Task 5.2 – Negative edges and Bellman-Ford
+Unsafe decision: Dijkstra permanently finalises the currently smallest unvisited distance. A later path containing a negative edge may reduce that distance, invalidating the greedy commitment.
+ALGORITHM BellmanFord(Graph, source)
+BEGIN
+    FOR each vertex v DO
+        dist[v] ← INFINITY
+        pred[v] ← NONE
+    END FOR
+    dist[source] ← 0
+
+    REPEAT |V|-1 TIMES
+        changed ← FALSE
+        FOR each edge (u,v) with weight w DO
+            IF dist[u] != INFINITY AND dist[u] + w < dist[v] THEN
+                dist[v] ← dist[u] + w
+                pred[v] ← u
+                changed ← TRUE
+            END IF
+        END FOR
+        IF changed = FALSE THEN
+            BREAK
+        END IF
+    END REPEAT
+
+    FOR each edge (u,v) with weight w DO
+        IF dist[u] != INFINITY AND dist[u] + w < dist[v] THEN
+            REPORT reachable negative-weight cycle
+            RETURN
+        END IF
+    END FOR
+    RETURN dist, pred
+END
+Repeated relaxation allows improvements to propagate through paths regardless of edge sign. After |V|-1 rounds, any further reachable improvement indicates a reachable negative cycle.
+
+Task 5.3 – Floyd all-pairs shortest paths
+Define DP[k,i,j] as the shortest distance from vertex i to vertex j when only vertices 1 through k may be used as intermediate vertices.
+Initialise D[i,j] to the direct edge weight; D[i,i]=0; absent edges = INFINITY.
+Core transition:
+FOR k ← 1 TO |V| DO
+    FOR i ← 1 TO |V| DO
+        FOR j ← 1 TO |V| DO
+            D[i,j] ← MIN(D[i,j], D[i,k] + D[k,j])
+        END FOR
+    END FOR
+END FOR
+RETURN D
+Unlike Dijkstra or Bellman-Ford, which compute distances from one source, Floyd computes shortest distances for every ordered pair of vertices by progressively allowing more intermediate vertices.

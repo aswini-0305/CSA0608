@@ -1,0 +1,53 @@
+TASK 1 – ALGORITHM DESIGN REVIEW
+Task 1.1 – Deficiencies
+1. Inputs are vague: “Read packages” does not define package weights, values, number of packages, or vehicle capacity.
+2. “Arrange packages” gives no ordering rule. Another engineer cannot know whether to sort by value, weight, or value-to-weight ratio.
+3. “Select the best package” is undefined. The greedy criterion is missing.
+4. The feasibility condition is absent. The algorithm does not state that selected weight must not exceed remaining capacity.
+5. Fractional selection is not handled. The problem allows a package to be divided, but the proposed algorithm only says “Add suitable package”.
+6. Remaining capacity is not updated, so the loop cannot determine how much space is left.
+7. The termination condition is vague. It is unclear what happens when all packages are considered or capacity becomes zero.
+8. The result is not constructed. The algorithm does not record the fraction of each package loaded or calculate its contribution to value.
+
+Task 1.2 – Repaired Greedy Pseudocode
+ALGORITHM FractionalKnapsack(Packages, Capacity)
+INPUT: Packages, each with weight and value; non-negative vehicle Capacity
+OUTPUT: Selected fraction of each package and maximum total value
+
+BEGIN
+    FOR each package p in Packages DO
+        IF p.weight <= 0 OR p.value < 0 THEN
+            REPORT invalid input
+            RETURN
+        END IF
+        p.ratio ← p.value / p.weight
+    END FOR
+
+    SORT Packages in descending order of ratio
+    remaining ← Capacity
+    totalValue ← 0
+    FOR each package p in Packages DO
+        selectedFraction[p] ← 0
+    END FOR
+
+    FOR each package p in Packages DO
+        IF remaining = 0 THEN
+            BREAK
+        END IF
+
+        IF p.weight <= remaining THEN
+            selectedFraction[p] ← 1
+            remaining ← remaining - p.weight
+            totalValue ← totalValue + p.value
+        ELSE
+            selectedFraction[p] ← remaining / p.weight
+            totalValue ← totalValue + selectedFraction[p] * p.value
+            remaining ← 0
+        END IF
+    END FOR
+
+    RETURN selectedFraction, totalValue
+END
+
+Task 1.3 – Design Defence (under 100 words)
+This is pseudocode because it describes the algorithm through language-independent operations, named inputs and outputs, conditions, repetition, and assignments. It does not use the syntax or data structures of a particular programming language. The greedy rule is explicit: consider packages in descending value-per-unit-weight order, taking a whole package when possible and otherwise taking the fraction that fills the remaining capacity. Each update is precise enough for an implementation, while remaining independent of any compiler or programming language.

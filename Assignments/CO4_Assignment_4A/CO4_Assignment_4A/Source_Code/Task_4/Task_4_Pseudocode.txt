@@ -1,0 +1,27 @@
+TASK 4 – WORD BREAK DEFECT
+Task 4.1 – Defect
+The decision checks only whether substring(Text,j,i) is in Dictionary. It omits the condition DP[j] = TRUE. A dictionary word ending at i is useful only if the preceding prefix from position 0 to j can already be segmented.
+
+Task 4.2 – Failing input
+Text = "catsand"
+Dictionary = {"cat", "sand", "and"}.
+Use prefix positions: DP[0]=TRUE.
+At i=1 and i=2, no dictionary word ends there, so DP[1]=FALSE and DP[2]=FALSE.
+At i=3, substring(0,3)="cat" is a word, so DP[3]=TRUE.
+At i=6, substring(3,6)="and" is a word. The faulty algorithm sets DP[6]=TRUE without checking DP[3] (which happens to be true in this example), so this is not a failing case.
+A true failing case:
+Text = "catsand"; Dictionary = {"cats", "and"}.
+DP[0]=TRUE. At i=4, "cats" is found and DP[4]=TRUE. At i=7, "and" is found from j=4 and this is valid. Still valid.
+Use Text = "catsand"; Dictionary = {"and", "sand"}.
+At i=3, substring(0,3)="and" does not match; DP[3]=FALSE. At i=4, no prefix-ending word is found; DP[4]=FALSE. At i=7, substring(4,7)="and" is found, so faulty algorithm sets DP[7]=TRUE even though DP[4]=FALSE. Correct result is FALSE because neither "cats" nor "cat" is in the dictionary. First incorrect state is DP[7].
+
+Task 4.3 – Minimal repair
+Replace:
+IF substring(Text,j,i) is in Dictionary THEN
+with:
+IF DP[j] = TRUE AND substring(Text,j,i) is in Dictionary THEN
+All other logic remains unchanged.
+
+Task 4.4 – Regression check
+Text = "apple"; Dictionary = {"app", "le"}.
+DP[0]=TRUE. At i=3, j=0 gives "app" and DP[0]=TRUE, so DP[3]=TRUE. At i=5, j=3 gives "le" and DP[3]=TRUE, so DP[5]=TRUE. The repaired algorithm returns TRUE, preserving the correct result.

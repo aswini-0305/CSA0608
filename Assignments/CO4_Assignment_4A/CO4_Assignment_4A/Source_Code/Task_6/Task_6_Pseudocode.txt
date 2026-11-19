@@ -1,0 +1,92 @@
+TASK 6 – ENERGY-AWARE JOB SCHEDULING
+Stage 1 – Interpret
+Input: Jobs with start time, finish time, and non-negative energy-saving value.
+Output: A set of selected job IDs and maximum total energy-saving value.
+Objective: Maximise the sum of values of selected jobs.
+Constraint: Selected intervals must not overlap. A job ending at time t is compatible with another beginning at t.
+Decision: Include or exclude each job while respecting compatibility.
+
+Stage 2 – Strategy
+Use dynamic programming for weighted interval scheduling. Earliest-finish-time greedy is not sufficient when values differ: a low-value short job may block a higher-value combination. DP compares taking a job with the best compatible earlier solution against skipping it, so it considers combinations rather than relying on one local choice.
+
+Stage 3 – Critical information
+Sort jobs by non-decreasing finish time. Let p(i) be the largest index j < i whose finish time is <= start time of job i; if none exists, p(i)=0.
+OPT(i) is the maximum total value obtainable from the first i jobs in sorted order.
+Base: OPT(0)=0.
+Decision: skip i gives OPT(i-1); take i gives value[i]+OPT(p(i)).
+Recurrence: OPT(i)=MAX(OPT(i-1), value[i]+OPT(p(i))).
+
+Stage 4 – Complete pseudocode
+ALGORITHM WeightedIntervalScheduling(Jobs)
+INPUT: Jobs with ID, start, finish, value
+OUTPUT: Selected job IDs and maximum total value
+BEGIN
+    SORT Jobs by non-decreasing finish time
+    n ← number of Jobs
+
+    FOR i ← 1 TO n DO
+        p[i] ← 0
+        FOR j ← 1 TO i-1 DO
+            IF Jobs[j].finish <= Jobs[i].start THEN
+                p[i] ← j
+            END IF
+        END FOR
+    END FOR
+
+    OPT[0] ← 0
+    FOR i ← 1 TO n DO
+        takeValue ← Jobs[i].value + OPT[p[i]]
+        skipValue ← OPT[i-1]
+        OPT[i] ← MAX(takeValue, skipValue)
+        IF takeValue > skipValue THEN
+            TAKE[i] ← TRUE
+        ELSE
+            TAKE[i] ← FALSE
+        END IF
+    END FOR
+
+    selected ← empty list
+    i ← n
+    WHILE i > 0 DO
+        IF TAKE[i] = TRUE AND
+           Jobs[i].value + OPT[p[i]] >= OPT[i-1] THEN
+            ADD Jobs[i].ID to selected
+            i ← p[i]
+        ELSE
+            i ← i - 1
+        END IF
+    END WHILE
+    REVERSE selected
+    RETURN selected, OPT[n]
+END
+
+Stage 5 – Desk-check
+Jobs already sorted by finish time:
+J1(1,3,20), J2(2,5,50), J3(4,6,30), J4(6,8,40),
+J5(5,9,60), J6(8,10,30), J7(9,11,50), J8(11,13,40).
+Compatibility indices:
+p(1)=0, p(2)=0, p(3)=1, p(4)=3, p(5)=2, p(6)=4, p(7)=5, p(8)=7.
+DP values:
+OPT(0)=0
+OPT(1)=20
+OPT(2)=50
+OPT(3)=MAX(50,30+20)=50
+OPT(4)=MAX(50,40+50)=90
+OPT(5)=MAX(90,60+50)=110
+OPT(6)=MAX(110,30+90)=120
+OPT(7)=MAX(120,50+110)=160
+OPT(8)=MAX(160,40+160)=200
+Reconstruction: J8 is selected; move to p(8)=7. J7 is selected; move to p(7)=5. J5 is selected; move to p(5)=2. J2 is selected; move to p(2)=0.
+Selected jobs: J2, J5, J7, J8. Total value = 50+60+50+40 = 200.
+
+Stage 6 – Adversarial challenge
+Constructed jobs:
+A: start 1, finish 10, value 100
+B: start 1, finish 4, value 45
+C: start 4, finish 7, value 45
+D: start 7, finish 10, value 45
+E: start 10, finish 12, value 20
+This challenges a greedy rule that selects the single highest-value job first: selecting A gives 100 and blocks B, C, and D, whereas B+C+D gives 135; E can then also be selected because A/B/C/D finish at 10 and E starts at 10.
+Prediction: DP should choose B, C, D, and E for total 155, rather than A+E=120.
+DP comparison: take A = 100; skip A permits B+C+D = 135 by time 10; E adds 20 to the best compatible value 135. Optimal set = B,C,D,E, value 155.
+Critical decision: compare taking a job with the best compatible earlier subproblem against skipping it. The design does not fail on this input because it evaluates combinations through the recurrence instead of committing to the locally highest-value job.
