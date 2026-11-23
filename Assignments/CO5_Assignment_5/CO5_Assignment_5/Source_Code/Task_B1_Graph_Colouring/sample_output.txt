@@ -1,0 +1,30 @@
+
+Test 1: Colourable graph | vertices=5, colours=3
+Version 1 - Input order
+  Result: COLOURABLE
+  Colouring: [0, 1, 2, 0, 1]
+  Nodes=6, Attempts=9, Rejected=4, Backtracks=0, MaxDepth=5
+Version 2 - DSATUR-style order
+  Result: COLOURABLE
+  Colouring: [2, 0, 1, 1, 0]
+  Nodes=6, Attempts=9, Rejected=4, Backtracks=0, MaxDepth=5
+
+Test 2: K4 with three colours | vertices=4, colours=3
+Version 1 - Input order
+  Result: NOT COLOURABLE
+  Colouring: None
+  Nodes=16, Attempts=48, Rejected=33, Backtracks=15, MaxDepth=3
+Version 2 - DSATUR-style order
+  Result: NOT COLOURABLE
+  Colouring: None
+  Nodes=16, Attempts=48, Rejected=33, Backtracks=15, MaxDepth=3
+
+Test 3: Single isolated vertex | vertices=1, colours=1
+Version 1 - Input order
+  Result: COLOURABLE
+  Colouring: [0]
+  Nodes=2, Attempts=1, Rejected=0, Backtracks=0, MaxDepth=1
+Version 2 - DSATUR-style order
+  Result: COLOURABLE
+  Colouring: [0]
+  Nodes=2, Attempts=1, Rejected=0, Backtracks=0, MaxDepth=1

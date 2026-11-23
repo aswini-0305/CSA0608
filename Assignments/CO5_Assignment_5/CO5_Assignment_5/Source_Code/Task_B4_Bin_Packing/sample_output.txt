@@ -1,0 +1,19 @@
+
+Normal production example
+Capacity: 10
+Workloads: [4, 7, 2, 6, 5, 3, 8, 2]
+Servers used: 5
+Server 1: workloads=[4], used=4, remaining=6
+Server 2: workloads=[7, 2], used=9, remaining=1
+Server 3: workloads=[6], used=6, remaining=4
+Server 4: workloads=[5, 3], used=8, remaining=2
+Server 5: workloads=[8, 2], used=10, remaining=0
+
+Challenge input - demonstrates non-optimality
+Capacity: 10
+Workloads: [6, 6, 4, 4, 6, 4]
+Servers used: 4
+Server 1: workloads=[6], used=6, remaining=4
+Server 2: workloads=[6, 4], used=10, remaining=0
+Server 3: workloads=[4, 6], used=10, remaining=0
+Server 4: workloads=[4], used=4, remaining=6

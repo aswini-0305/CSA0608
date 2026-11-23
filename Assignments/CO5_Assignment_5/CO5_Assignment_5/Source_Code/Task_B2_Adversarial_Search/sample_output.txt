@@ -1,0 +1,12 @@
+
+Graph A - Path graph (easy)
+Vertices=8, Colours=3
+Result: COLOURABLE
+Colouring: [0, 1, 0, 1, 0, 1, 0, 1]
+Nodes=9, Attempts=12, Rejected=4, Backtracks=0
+
+Graph B - K4 plus four isolated vertices (harder)
+Vertices=8, Colours=3
+Result: NOT COLOURABLE
+Colouring: None
+Nodes=16, Attempts=48, Rejected=33, Backtracks=15
